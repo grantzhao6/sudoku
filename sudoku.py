@@ -4,9 +4,18 @@ class SudokuGame:
     def __init__(self):
         self.board = [[0 for i in range(9)] for j in range(9)]
     
+
+    def find_empty(self):
+        """ Finds an empty cell in the board, returns (row, col) or None if board is full. """
+        for i in range(9):
+            for j in range(9):
+                if self.board[i][j] == 0:
+                    return (i, j)
+        return None
+    
     def is_valid_move(self, row, col, num):
         """ Check if a number can be placed at (row, col) without violating Sudoku rules. """
-        
+
         for i in range(9):
             if self.board[row][i] == num or self.board[i][col] == num:
                 return False
@@ -18,9 +27,32 @@ class SudokuGame:
                     return False
 
         return True
+
+    def solve_board(self):
+        """ Solves the board using backtracking. """
+        empty = self.find_empty()
+
+        if empty == None:
+            return True
+        
+        row, col = empty
+        numbers = list(range(1, 10))
+        random.shuffle(numbers)
+        
+        for num in numbers:
+            if self.is_valid_move(row, col, num):
+                self.board[row][col] = num
+                if self.solve_board():
+                    return True
+                self.board[row][col] = 0
+        
+        return False
+    
+    
     
     def print_board(self):
         print(self.board)
 
 game = SudokuGame()
+game.solve_board()
 game.print_board()
