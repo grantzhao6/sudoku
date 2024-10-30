@@ -48,6 +48,14 @@ class SudokuGame:
         
         return False
     
+    def remove_numbers(self, holes=40):
+        """ Remove numbers from a solved board to create a puzzle with empty cells. """
+        count = 0
+        while count < holes:
+            row, col = random.randint(0, 8), random.randint(0, 8)
+            if self.board[row][col] != 0:
+                self.board[row][col] = 0
+                count+=1
     
     
     def print_board(self):
